@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<rss version="2.0"><channel><title>x</title>
+  <item><title>Bad</title><link>javascript:alert(1)</link><description><![CDATA[<script>alert(1)</script><img src=x onerror=alert(2)>]]></description></item>
+</channel></rss>
