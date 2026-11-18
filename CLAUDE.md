@@ -36,7 +36,7 @@ No build step. No runtime dependencies (`linkedom` is dev-only, for tests).
 
 ## Before every commit
 1. `npm test` must pass.
-2. Security check, all must be empty/true:
+2. Security check: run `./scripts/security-check.sh` (CI runs it too). It enforces the rules below, and:
    - `grep -rnE "innerHTML|outerHTML|insertAdjacentHTML|eval\(|new Function|document\.write" src/ | grep -v "^[^:]*:[0-9]*: *//"` returns nothing (comment lines are ignored).
    - `manifest.json` has `"permissions": []` and no `host_permissions`, `background`, or `web_accessible_resources`.
    - `grep -rnE "fetch\(|XMLHttpRequest|WebSocket|sendBeacon|importScripts|<script|<img|<iframe" src/` returns nothing. (XML namespace strings like `http://www.w3.org/...` are fine; they are not requests.)
