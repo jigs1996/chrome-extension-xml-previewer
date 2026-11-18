@@ -14,12 +14,11 @@ Spec: `docs/superpowers/specs/2026-11-18-xml-previewer-design.md`. Plan: `docs/s
 Reading article HTML, schema validation, editing XML, live link checking (needs network permissions), other browsers.
 
 ## Status
-Done: everything above, 21 unit tests, verified in real Chromium.
-Backlog (deferred review minors): Atom link with no `rel` should count as alternate; ignore namespaced `<atom:link>` in RSS items;
-count only direct children of root/channel as rows; use `Object.create(null)` for item fields; show `<enclosure url>`;
-Raw view should keep the `<?xml?>` declaration on Chrome's viewer path; Copy fallback on http pages and copy filtered rows only;
-guard very deep trees against stack overflow; only treat Chrome's own `parsererror` as an error.
+Done: everything above, plus (unreleased, see `CHANGELOG.md`) sitemap health checks, sort, issue filter, CSV/JSON export, extra sitemap fields, tree XPath copy and query, keyboard shortcuts. 31 unit tests, verified in real Chromium.
+Backlog (deferred review minors): count only direct children of root/channel as rows; Raw view should keep the `<?xml?>` declaration on Chrome's viewer path;
+Copy fallback on http pages; guard very deep trees against stack overflow; only treat Chrome's own `parsererror` as an error.
 Ideas (needs your decision): link checking (HEAD requests), Chrome Web Store listing.
+Keep `CHANGELOG.md` updated with every user-visible change (Keep a Changelog format).
 
 ## Architecture
 Content script files share one global `XP` (content scripts cannot be ES modules), loaded in this order by `manifest.json`:
