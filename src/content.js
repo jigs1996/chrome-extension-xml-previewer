@@ -13,7 +13,8 @@
     const ct = (document.contentType || '').toLowerCase();
     if (ct === 'image/svg+xml' || ct === 'application/xhtml+xml' || ct === 'text/html') return null;
     if (document.documentElement.localName !== 'html') {
-      return XP.isPreviewable(document, ct) ? { doc: document, raw: serialize(document) } : null;
+      // The live document is replaced below, so views read a detached copy (XPath needs a real document).
+      return XP.isPreviewable(document, ct) ? { doc: document.cloneNode(true), raw: serialize(document) } : null;
     }
     let raw = null;
     const viewer = document.getElementById('webkit-xml-viewer-source-xml');
@@ -35,10 +36,14 @@
   const kind = XP.detectKind(doc);
 
   // Everything that reads the XML runs before the page is replaced.
-  const tableData =
-    kind === 'sitemap' || kind === 'sitemapindex' ? XP.extractSitemap(doc)
-    : kind === 'rss' || kind === 'atom' ? XP.extractFeed(doc)
-    : null;
+  let tableData = null;
+  if (kind === 'sitemap' || kind === 'sitemapindex') {
+    tableData = XP.extractSitemap(doc);
+    tableData.analysis = XP.analyzeSitemap(tableData);
+  } else if (kind === 'rss' || kind === 'atom') {
+    tableData = XP.extractFeed(doc);
+  }
+  const filename = `${location.hostname || 'xml'}-${kind}`.replace(/[^a-z0-9.-]/gi, '_');
 
   // Views build elements in the XHTML namespace so tables/buttons/details behave in an XML document.
   const d = {
@@ -54,7 +59,7 @@
   };
 
   const views = {
-    table: () => XP.renderTable(d, tableData),
+    table: () => XP.renderTable(d, tableData, { filename }),
     tree: () => XP.renderTree(d, rootEl),
     raw: () => XP.renderRaw(d, raw),
   };
@@ -77,6 +82,7 @@
     const bar = app.appendChild(make('header', 'xp-toolbar'));
     bar.appendChild(make('span', 'xp-badge', kindLabel));
     bar.appendChild(make('span', 'xp-url', location.href));
+    bar.appendChild(make('span', 'xp-hint', `/ search · 1-${order.length} views`));
     const tabs = bar.appendChild(make('nav', 'xp-tabs'));
     const view = app.appendChild(make('main', 'xp-view'));
 
@@ -94,6 +100,21 @@
       buttons[name] = b;
     }
     show(order[0]);
+    document.addEventListener('keydown', (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const tag = e.target && e.target.localName;
+      if (tag === 'input' || tag === 'textarea' || tag === 'select') {
+        if (e.key === 'Escape') e.target.blur();
+        return;
+      }
+      if (e.key === '/') {
+        const input = view.querySelector('input');
+        if (input) {
+          e.preventDefault();
+          input.focus();
+        }
+      } else if (order[Number(e.key) - 1]) show(order[Number(e.key) - 1]);
+    });
   } catch (e) {
     console.warn('XML Previewer: leaving page untouched', e);
     return;
