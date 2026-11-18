@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "XML Previewer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Readable previews for XML files: sitemaps, RSS and Atom as tables, everything else as a tree. No network access.",
   "permissions": [],
   "icons": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },

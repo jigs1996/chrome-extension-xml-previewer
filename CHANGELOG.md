@@ -5,7 +5,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
-Ready for release as 0.2.0 (version numbers not bumped yet).
+## [0.2.0] - 2026-11-18
 
 ### Added
 - Sitemap health summary chips: URL count against the 50,000 limit, multiple hosts, mixed http/https, duplicate URLs, non-http(s) URLs, missing/invalid/future `lastmod`, `priority` outside 0-1, invalid `changefreq`. Local checks only.
@@ -17,6 +17,7 @@ Ready for release as 0.2.0 (version numbers not bumped yet).
 - Keyboard shortcuts: `/` focuses the filter or XPath box, `1`-`3` switch views, `Esc` leaves the box.
 - RSS/Atom: `<enclosure>` URL shown in the item details.
 - 10 more unit tests (31 total).
+- Open source files: MIT license, security policy, contributing guide, code of conduct, issue and PR templates, CI workflow, and `scripts/security-check.sh`.
 
 ### Fixed
 - Atom `<link>` without `rel` now counts as the item link.
@@ -40,5 +41,6 @@ Ready for release as 0.2.0 (version numbers not bumped yet).
 ### Security
 - No `innerHTML`/`eval`, no permissions, no network requests, no remote code; links limited to http/https with `rel="noopener noreferrer"`.
 
-[Unreleased]: https://github.com/jigs1996/chrome-extension-xml-previewer/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/jigs1996/chrome-extension-xml-previewer/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/jigs1996/chrome-extension-xml-previewer/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/jigs1996/chrome-extension-xml-previewer/releases/tag/v0.1.0
